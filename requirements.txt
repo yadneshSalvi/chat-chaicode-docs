@@ -1,0 +1,11 @@
+requests
+beautifulsoup4
+crawl4ai
+tiktoken
+langchain
+langchain-qdrant
+langchain-openai
+qdrant-client
+dotenv
+openai
+streamlit
