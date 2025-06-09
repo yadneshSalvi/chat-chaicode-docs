@@ -283,18 +283,14 @@ def main():
         This chat application uses:
         - **OpenAI Embeddings** for semantic search
         - **Qdrant Vector Store** for document retrieval
-        - **GPT-4o-mini** for intelligent responses
-        - **RAG (Retrieval Augmented Generation)** for accurate answers
+        - **GPT-4.1** for intelligent responses
         """)
         
         st.markdown("### 💡 Tips")
         st.markdown("""
-        - Be specific in your questions
-        - Ask follow-up questions for clarification
-        - Reference previous answers in your questions
         - Ask about Chai documentation topics
-        - Use natural language
-        - Check the source information for context
+        - Ask follow-up questions for clarification
+        - Visit original documentation from provided links for more information
         """)
         
         # Show conversation stats
