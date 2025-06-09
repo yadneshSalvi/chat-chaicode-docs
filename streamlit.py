@@ -261,6 +261,8 @@ def main():
     # Initialize session state for chat history
     if "messages" not in st.session_state:
         st.session_state.messages = []
+    if "process_starter_question" not in st.session_state:
+        st.session_state.process_starter_question = None
     
     # Chat container
     st.markdown('<div class="chat-container">', unsafe_allow_html=True)
@@ -283,14 +285,18 @@ def main():
             if i % 2 == 0:
                 with col1:
                     if st.button(f"💡 {question}", key=f"starter_{i}", use_container_width=True):
-                        # Simulate user input
+                        # Add user message to chat history
                         st.session_state.messages.append({"role": "user", "content": question})
+                        # Set flag to process this question
+                        st.session_state.process_starter_question = question
                         st.rerun()
             else:
                 with col2:
                     if st.button(f"💡 {question}", key=f"starter_{i}", use_container_width=True):
-                        # Simulate user input
+                        # Add user message to chat history
                         st.session_state.messages.append({"role": "user", "content": question})
+                        # Set flag to process this question
+                        st.session_state.process_starter_question = question
                         st.rerun()
         
         st.markdown("---")
@@ -300,6 +306,19 @@ def main():
     for message in st.session_state.messages:
         with st.chat_message(message["role"]):
             st.markdown(message["content"])
+    
+    # Process starter question if one was clicked
+    if hasattr(st.session_state, 'process_starter_question') and st.session_state.process_starter_question:
+        question = st.session_state.process_starter_question
+        # Clear the flag
+        st.session_state.process_starter_question = None
+        
+        # Display assistant response
+        with st.chat_message("assistant"):
+            response = process_question(question, embeddings, qdrant, llm_model, st.session_state.messages)
+            if response:
+                # Add assistant response to chat history
+                st.session_state.messages.append({"role": "assistant", "content": response})
     
     # Chat input
     if prompt := st.chat_input("Ask your question about Chai-docs..."):
