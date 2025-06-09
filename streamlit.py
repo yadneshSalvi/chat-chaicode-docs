@@ -224,9 +224,21 @@ def main():
         background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
         color: white;
         border: none;
+        transition: all 0.3s ease;
     }
     .stButton > button:hover {
         background: linear-gradient(90deg, #764ba2 0%, #667eea 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    /* Starter question buttons styling */
+    div[data-testid="column"] .stButton > button {
+        height: 60px;
+        font-size: 14px;
+        text-align: left;
+        white-space: normal;
+        word-wrap: break-word;
+        padding: 10px 15px;
     }
     </style>
     """, unsafe_allow_html=True)
@@ -252,6 +264,37 @@ def main():
     
     # Chat container
     st.markdown('<div class="chat-container">', unsafe_allow_html=True)
+    
+    # Show starter questions only if no messages yet
+    if not st.session_state.messages:
+        st.markdown("### 🚀 Quick Start - Try these questions:")
+        
+        # Define starter questions
+        starter_questions = [
+            "What are the primitive data types in C++?",
+            "How to add css and js to django project?",
+        ]
+        
+        # Create columns for better layout
+        col1, col2 = st.columns(2)
+        
+        # Display starter questions as clickable buttons
+        for i, question in enumerate(starter_questions):
+            if i % 2 == 0:
+                with col1:
+                    if st.button(f"💡 {question}", key=f"starter_{i}", use_container_width=True):
+                        # Simulate user input
+                        st.session_state.messages.append({"role": "user", "content": question})
+                        st.rerun()
+            else:
+                with col2:
+                    if st.button(f"💡 {question}", key=f"starter_{i}", use_container_width=True):
+                        # Simulate user input
+                        st.session_state.messages.append({"role": "user", "content": question})
+                        st.rerun()
+        
+        st.markdown("---")
+        st.markdown("**Or type your own question below:**")
     
     # Display chat history
     for message in st.session_state.messages:
