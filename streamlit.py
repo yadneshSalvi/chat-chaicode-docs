@@ -143,13 +143,9 @@ def process_question(question, embeddings, qdrant, llm_model, conversation_histo
         relevant_chunks = qdrant.similarity_search(question, k=5)
         relevant_chunks_str = "\n".join([chunk.page_content for chunk in relevant_chunks])
         
-        # Step 3: Preparing response
-        status_placeholder.info("🧠 Analyzing conversation context and preparing your answer...")
-        time.sleep(0.5)
-        
-        # Step 4: Generating response
+        # Step 3: Generating response
         status_placeholder.info("✨ Generating your personalized response...")
-        time.sleep(0.3)
+        time.sleep(0.5)
         
         # Clear status
         status_placeholder.empty()
@@ -177,7 +173,7 @@ def process_question(question, embeddings, qdrant, llm_model, conversation_histo
         for chunk in llm_model.stream(llm_input):
             if hasattr(chunk, 'content') and chunk.content:
                 full_response += chunk.content
-                response_placeholder.markdown(full_response + "▌")
+                response_placeholder.markdown(full_response + "▌") #typing effect
         
         # Final response without cursor
         response_placeholder.markdown(full_response)
@@ -202,7 +198,7 @@ def main():
         page_title="Chat with Chai-docs",
         page_icon="🍵",
         layout="wide",
-        initial_sidebar_state="collapsed"
+        initial_sidebar_state="expanded"
     )
     
     # Custom CSS for better styling
